@@ -87,11 +87,10 @@ ALL_COUNTRIES = all_countries
 
 
 class LocationParser:
-    def __init__(self, data_dir: str, max_level: int):
-        if not data_dir.endswith("/"):
-            data_dir += "/"
-        self.data_dir = data_dir
-        self.data_url_temp = "zip://" + self.data_dir + "gadm36_{country_code}_shp.zip!gadm36_{country_code}_{level}.shp"
+    def __init__(self, data_url_prefix: str, max_level: int):
+        if not data_url_prefix.endswith("/"):
+            data_url_prefix += "/"
+        self.data_url_temp = data_url_prefix + "gadm36_{country_code}_shp.zip!gadm36_{country_code}_{level}.shp"
         self.country = {}  # key: country_code value: Division
         self.max_level = max_level
 

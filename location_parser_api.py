@@ -8,8 +8,8 @@ from location_parser import LocationParser
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
-parser = LocationParser("C:/Users/hsp87/Desktop", 2)
-parser.load_country("CHN", 4)
+parser = LocationParser("zip+s3://taihu-resource/gadm/shps", 2)
+parser.load()
 
 
 @app.route("/location")
@@ -30,3 +30,7 @@ def location():
     for div in result:
         resp['level_' + str(div.level)] = div.to_dict()
     return resp
+
+
+if __name__ == '__main__':
+      app.run(host='0.0.0.0', port=8080)

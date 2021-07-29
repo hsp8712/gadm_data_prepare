@@ -1,5 +1,6 @@
 import geopandas
 
-s = "CHN.1.2"
+d = ["a"]
 
-print(s[0:s.rindex(".")])
+print(d[:-1])
+
