@@ -1,5 +1,4 @@
 import geopandas
-import pandas
 from shapely.geometry.point import Point
 from shapely.geometry.base import BaseGeometry
 
@@ -59,9 +58,24 @@ class Division:
                 break
         return result
 
+    def to_dict(self):
+        d = {
+            "level": self.level,
+            "gid": self.gid,
+            "name": self.name
+        }
+
+        if self.level > 0:
+            d['var_name'] = self.var_name
+            d['nl_name'] = self.nl_name
+            d['hasc'] = self.hasc
+            d['local_type'] = self.local_type
+            d['eng_type'] = self.eng_type
+        return d
+
     def __str__(self):
-        return "level: {}, gid: {}, name: {}, var_name: {}, nl_name: {}"\
-            .format(self.level, self.gid, self.name, self.var_name, self.nl_name)
+        return "{{level: {}, gid: {}, hasc: {}, name: {}, var_name: {}, local_type: {}, eng_type: {}, nl_name: {}}}"\
+            .format(self.level, self.gid, self.hasc, self.name, self.var_name, self.local_type, self.eng_type, self.nl_name)
 
     def __repr__(self):
         return self.__str__()
@@ -148,5 +162,5 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
     parser = LocationParser("C:/Users/hsp87/Desktop", 2)
     parser.load_country("CHN", 4)
-    result = parser.parse(Point(117.871026, 31.606636))
+    result = parser.parse(Point(121.546074, 31.090431))
     print(result)
