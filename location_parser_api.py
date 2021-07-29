@@ -1,5 +1,6 @@
 import logging
-from flask import Flask
+from flask import Flask, abort
+from flask import request
 from shapely.geometry import Point
 
 from location_parser import LocationParser
@@ -11,9 +12,18 @@ parser = LocationParser("C:/Users/hsp87/Desktop", 2)
 parser.load_country("CHN", 4)
 
 
-@app.route("/location/<float:lng>/<float:lat>")
-def location(lng, lat):
-    result = parser.parse(Point(lng, lat))
+@app.route("/location")
+def location():
+    try:
+        lng = request.args.get('lng', type=float)
+        lat = request.args.get('lat', type=float)
+        logging.info("lng = %f, lat = %f", lng, lat)
+        result = parser.parse(Point(lng, lat))
+    except TypeError:
+        logging.error("parameter lng or lat wrong")
+        abort(400, "parameter lng or lat wrong")
+        return
+
     resp = {}
     if result is None:
         return resp

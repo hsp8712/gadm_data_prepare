@@ -5,6 +5,7 @@ from shapely.geometry.base import BaseGeometry
 from countries import all_countries
 import logging
 
+
 def hierarchy(string: str, delimiter: str):
     """
     Generate hierarchy list. For example string="CHN.1.2" then return list like ["CHN", "CHN.1", "CHN.1.2"]
@@ -74,8 +75,9 @@ class Division:
         return d
 
     def __str__(self):
-        return "{{level: {}, gid: {}, hasc: {}, name: {}, var_name: {}, local_type: {}, eng_type: {}, nl_name: {}}}"\
-            .format(self.level, self.gid, self.hasc, self.name, self.var_name, self.local_type, self.eng_type, self.nl_name)
+        return "{{level: {}, gid: {}, hasc: {}, name: {}, var_name: {}, local_type: {}, eng_type: {}, nl_name: {}}}" \
+            .format(self.level, self.gid, self.hasc, self.name, self.var_name, self.local_type, self.eng_type,
+                    self.nl_name)
 
     def __repr__(self):
         return self.__str__()
@@ -99,8 +101,16 @@ class LocationParser:
                 return
 
             data_url = self.data_url_temp.format(country_code=country_code, level=level)
-            logging.info("country_code: %s, level: %d - reading", country_code, level)
-            df = geopandas.read_file(data_url)
+            logging.info("country_code: %s, level: %d, data_url: %s - reading", country_code, level, data_url)
+
+            try:
+                df = geopandas.read_file(data_url)
+            except Exception as e:
+                logging.exception("country_code: %s, level: %d, data_url: %s - read failed",
+                                  country_code, level, data_url)
+                return
+
+
             logging.info("country_code: %s, level: %d - read done, loading", country_code, level)
 
             item_count = 0
