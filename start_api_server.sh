@@ -1,0 +1,1 @@
+nohup gunicorn --threads 16 -t 0 -b 0.0.0.0:8000 location_parser_api:app > app.log 2>&1 &
